@@ -39,7 +39,7 @@
     state: latest 
     update_cache: yes
 
-- name: install docker-compose
+- name: install docker-compose ver.{{ docker_compose_version }}
   get_url:
     url: "{{ docker_compose_url }}"
     dest: "{{ docker_compose_path }}"
