@@ -1,0 +1,46 @@
+---
+- name: Uninstall old versions docker
+  apt:  
+    name:
+      - docker 
+      - docker-engine
+      - docker.io 
+      - containerd 
+      - runc
+    state: absent
+
+- name: Install required system packages
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl 
+      - gnupg 
+      - lsb-release
+    state: latest 
+    update_cache: yes
+
+- name: Add Docker GPG apt Key
+  apt_key:
+    url: "{{ docker_apt_gpg_key }}"
+    state: present
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: "{{ docker_apt_repository }}"
+    state: present
+
+- name: Install docker
+  apt:  
+    name: 
+      - docker-ce 
+      - docker-ce-cli 
+      - containerd.io
+    state: latest 
+    update_cache: yes
+
+- name: install docker-compose ver.{{ docker_compose_version }}
+  get_url:
+    url: "{{ docker_compose_url }}"
+    dest: "{{ docker_compose_path }}"
+    mode: 0755
